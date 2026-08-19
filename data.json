@@ -1,0 +1,265 @@
+{
+  "flowers": [
+    {
+      "name": "Anemone",
+      "nativePattern": "ombre",
+      "type": "basic"
+    },
+    {
+      "name": "Belbutton",
+      "nativePattern": "ombre",
+      "type": "basic"
+    },
+    {
+      "name": "Dandelily",
+      "nativePattern": "ombre",
+      "type": "basic"
+    },
+    {
+      "name": "Dreampuff",
+      "nativePattern": "ombre",
+      "type": "basic"
+    },
+    {
+      "name": "Ghostgleam",
+      "nativePattern": "ombre",
+      "type": "basic"
+    },
+    {
+      "name": "Heavy Nettle",
+      "nativePattern": "ombre",
+      "type": "basic"
+    },
+    {
+      "name": "Hibiscus",
+      "nativePattern": "ombre",
+      "type": "basic"
+    },
+    {
+      "name": "Penstemum",
+      "nativePattern": "ombre",
+      "type": "basic"
+    },
+    {
+      "name": "Thistle",
+      "nativePattern": "ombre",
+      "type": "basic"
+    },
+    {
+      "name": "Tulias",
+      "nativePattern": "ombre",
+      "type": "basic"
+    },
+    {
+      "name": "Blazebulb",
+      "nativePattern": "molten",
+      "type": "extremophile"
+    },
+    {
+      "name": "Bubbaluna",
+      "nativePattern": "cosmic",
+      "type": "extremophile"
+    },
+    {
+      "name": "Crystalia",
+      "nativePattern": "crystal",
+      "type": "extremophile"
+    },
+    {
+      "name": "Frost Feather",
+      "nativePattern": "frost",
+      "type": "extremophile"
+    },
+    {
+      "name": "Sunburst",
+      "nativePattern": "sunbeam",
+      "type": "dlc"
+    },
+    {
+      "name": "Wheat Flower",
+      "nativePattern": "glitter",
+      "type": "dlc"
+    },
+    {
+      "name": "Bow Blossom",
+      "nativePattern": "iridescent",
+      "type": "event"
+    },
+    {
+      "name": "Eggwort",
+      "nativePattern": "speckled",
+      "type": "event"
+    },
+    {
+      "name": "Glowbal",
+      "nativePattern": "glow",
+      "type": "event"
+    },
+    {
+      "name": "Happadil",
+      "nativePattern": "confetti",
+      "type": "event"
+    },
+    {
+      "name": "Marigold",
+      "nativePattern": "trim",
+      "type": "event"
+    },
+    {
+      "name": "Petunia",
+      "nativePattern": "striped",
+      "type": "event"
+    },
+    {
+      "name": "Pinwheel",
+      "nativePattern": "alternate",
+      "type": "event"
+    },
+    {
+      "name": "Poinsettia",
+      "nativePattern": "patch",
+      "type": "event"
+    },
+    {
+      "name": "Rose",
+      "nativePattern": "ring",
+      "type": "event"
+    }
+  ],
+  "patterns": [
+    "ombre",
+    "molten",
+    "crystal",
+    "frost",
+    "cosmic",
+    "glitter",
+    "sunbeam",
+    "trim",
+    "speckled",
+    "alternate",
+    "striped",
+    "iridescent",
+    "patch",
+    "glow",
+    "ring",
+    "confetti"
+  ],
+  "colors": [
+    {
+      "name": "Black",
+      "swatch": "#3a383f"
+    },
+    {
+      "name": "Grey",
+      "swatch": "#807984"
+    },
+    {
+      "name": "White",
+      "swatch": "#f0eef4"
+    },
+    {
+      "name": "Red",
+      "swatch": "#c1293d"
+    },
+    {
+      "name": "Warm Pink",
+      "swatch": "#ffb2c7"
+    },
+    {
+      "name": "Coral",
+      "swatch": "#ec5c65"
+    },
+    {
+      "name": "Blush",
+      "swatch": "#ffa1a9"
+    },
+    {
+      "name": "Orange",
+      "swatch": "#f3a01b"
+    },
+    {
+      "name": "Peach",
+      "swatch": "#ffcd94"
+    },
+    {
+      "name": "Yellow",
+      "swatch": "#e8dc46"
+    },
+    {
+      "name": "Cream",
+      "swatch": "#fff4d1"
+    },
+    {
+      "name": "Lime",
+      "swatch": "#b7f832"
+    },
+    {
+      "name": "Pistachio",
+      "swatch": "#e9ff9c"
+    },
+    {
+      "name": "Green",
+      "swatch": "#43b035"
+    },
+    {
+      "name": "Mint",
+      "swatch": "#aaf7a6"
+    },
+    {
+      "name": "Teal",
+      "swatch": "#47c6c0"
+    },
+    {
+      "name": "Seafoam",
+      "swatch": "#abffe4"
+    },
+    {
+      "name": "Sky",
+      "swatch": "#1ab3fa"
+    },
+    {
+      "name": "Cloud",
+      "swatch": "#a8f6ff"
+    },
+    {
+      "name": "Blue",
+      "swatch": "#3179f7"
+    },
+    {
+      "name": "Ice",
+      "swatch": "#80bfff"
+    },
+    {
+      "name": "Indigo",
+      "swatch": "#3f4aef"
+    },
+    {
+      "name": "Periwinkle",
+      "swatch": "#a7a2f5"
+    },
+    {
+      "name": "Violet",
+      "swatch": "#6544c3"
+    },
+    {
+      "name": "Lilac",
+      "swatch": "#e799ff"
+    },
+    {
+      "name": "Magenta",
+      "swatch": "#c03bcc"
+    },
+    {
+      "name": "Cool Pink",
+      "swatch": "#ffb8ec"
+    },
+    {
+      "name": "Hot Pink",
+      "swatch": "#d9569d"
+    },
+    {
+      "name": "Pink",
+      "swatch": "#fa91d2"
+    }
+  ]
+}

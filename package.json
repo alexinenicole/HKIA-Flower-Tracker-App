@@ -1,0 +1,67 @@
+{
+  "name": "hkia-flower-tracker",
+  "version": "1.0.0",
+  "description": "HKIA Flower Tracker — Desktop Collection Tracker",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder --win",
+    "build:portable": "electron-builder --win portable",
+    "build:installer": "electron-builder --win nsis"
+  },
+  "keywords": [],
+  "author": "HKIA",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^33.0.0",
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "com.hkia.flower-tracker",
+    "productName": "HKIA Flower Tracker",
+    "copyright": "HKIA",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "**/*",
+      "!dist/**",
+      "!node_modules/.cache/**",
+      "!*.md",
+      "!.git/**",
+      "!.gitattributes"
+    ],
+    "extraResources": [
+      {
+        "from": "data.json",
+        "to": "data.json"
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "HKIA Flower Tracker"
+    },
+    "portable": {
+      "artifactName": "HKIA-Flower-Tracker-Portable.exe"
+    }
+  }
+}

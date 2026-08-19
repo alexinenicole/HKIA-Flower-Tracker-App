@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HKIA Flower Tracker</title>
+  <meta name="description" content="Track flower collection across colors and variants." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════════
+       Header
+  ═══════════════════════════════════════════════════ -->
+  <header class="site-header">
+    <div class="header-inner">
+
+      <div class="header-brand">
+        <div class="header-icon">🌸</div>
+        <div>
+          <h1 class="site-title">HKIA Flower Tracker</h1>
+          <p class="site-subtitle" id="subtitle-path">Loading config…</p>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <!-- Global counter -->
+        <div class="stat-pill" id="global-total-pill">
+          <span class="stat-num" id="global-total">0</span>
+          <span class="stat-label">Total Checked</span>
+        </div>
+
+        <!-- Toolbar buttons -->
+        <div class="toolbar">
+          <button class="toolbar-btn" id="btn-open-config" title="Edit data.json in your default text editor">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+            </svg>
+            Edit Config
+          </button>
+          <button class="toolbar-btn" id="btn-reload" title="Reload after saving data.json changes">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="23 4 23 10 17 10"/>
+              <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+            </svg>
+            Reload
+          </button>
+          <button class="toolbar-btn btn-danger" id="btn-reset" title="Clear all checks (asks for confirmation)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="3 6 5 6 21 6"/>
+              <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+              <path d="M10 11v6"/><path d="M14 11v6"/>
+              <path d="M9 6V4h6v2"/>
+            </svg>
+            Reset All
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Config path notice (shown after opening config) -->
+    <div class="config-notice" id="config-notice" style="display:none">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <span id="config-notice-text"></span>
+      <button class="notice-dismiss" id="notice-dismiss">✕</button>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════════════════════════
+       Loading / Error states
+  ═══════════════════════════════════════════════════ -->
+  <div class="loading-screen" id="loading-screen">
+    <div class="loading-spinner"></div>
+    <p>Loading tracker…</p>
+  </div>
+
+  <div class="error-screen" id="error-screen" style="display:none">
+    <div class="error-icon">⚠️</div>
+    <h2>Failed to load config</h2>
+    <p id="error-msg">Could not read data.json.</p>
+    <button class="toolbar-btn" id="btn-retry">Retry</button>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════
+       Main Table
+  ═══════════════════════════════════════════════════ -->
+  <main class="main-content" id="main-content" style="display:none">
+    <nav class="main-tabs" id="main-tabs">
+      <!-- Tabs will be dynamically generated here -->
+    </nav>
+    <div class="table-scroll-wrapper">
+      <table class="tracker-table" id="tracker-table">
+        <thead>
+          <tr class="flower-header-row" id="flower-header-row">
+            <th class="color-label-col sticky-left">Color</th>
+          </tr>
+          <tr class="variant-header-row" id="variant-header-row">
+            <th class="color-label-col sticky-left"></th>
+          </tr>
+        </thead>
+        <tbody id="tracker-tbody"></tbody>
+        <tfoot  id="tracker-tfoot"></tfoot>
+      </table>
+    </div>
+  </main>
+
+
+  <!-- ═══════════════════════════════════════════════════
+       Hybrid Colour-Combination Modal
+  ═══════════════════════════════════════════════════ -->
+  <div id="hybrid-modal" class="hybrid-modal-overlay" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="hybrid-modal-title">
+    <div class="hybrid-modal-box">
+
+      <div class="hybrid-modal-header">
+        <div class="hybrid-modal-title-group">
+          <img id="hybrid-modal-icon" class="hybrid-modal-flower-icon" src="" alt="">
+          <div>
+            <h3 class="hybrid-modal-title" id="hybrid-modal-title">Hybrid Tracker</h3>
+            <p class="hybrid-modal-subtitle" id="hybrid-modal-subtitle">Primary × Pattern colour combinations</p>
+          </div>
+        </div>
+        <button class="hybrid-modal-close" id="hybrid-modal-close" title="Close (Esc)">✕</button>
+      </div>
+
+      <div class="hybrid-modal-legend">
+        <span class="legend-item"><span class="legend-swatch legend-solid-link"></span> Diagonal — syncs with Solid (Main tab)</span>
+        <span class="legend-item"><span class="legend-swatch legend-pattern-link"></span> Column 1 — syncs with Pattern tab</span>
+        <span class="legend-item"><span class="legend-swatch legend-hybrid"></span> Cross-hybrid combination</span>
+      </div>
+
+      <div class="hybrid-modal-body">
+        <div class="hybrid-table-scroll">
+          <table class="hybrid-table" id="hybrid-table">
+            <thead id="hybrid-thead"></thead>
+            <tbody id="hybrid-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="hybrid-modal-footer">
+        <span id="hybrid-counter-text">0 / 841 hybrids tracked</span>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="tracker.js"></script>
+</body>
+</html>
+

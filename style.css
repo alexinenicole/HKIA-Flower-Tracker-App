@@ -1,0 +1,1239 @@
+/* ===========================
+   CSS Custom Properties
+   =========================== */
+:root {
+  --bg-deep: #0d0f1a;
+  --bg-mid: #131626;
+  --bg-card: #1a1d30;
+  --bg-card-hover: #1f2338;
+  --bg-row-alt: #161929;
+
+  --accent-1: #c084fc;
+  /* violet */
+  --accent-2: #f472b6;
+  /* pink */
+  --accent-3: #818cf8;
+  /* indigo */
+  --accent-glow: rgba(192, 132, 252, 0.25);
+
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+
+  --border-subtle: rgba(255, 255, 255, 0.07);
+  --border-glow: rgba(192, 132, 252, 0.4);
+
+  --solid-col: #1e2540;
+  --ombre-col: #201e3a;
+
+  --check-solid: #c084fc;
+  --check-ombre: #f472b6;
+  --check-glow-solid: rgba(192, 132, 252, 0.5);
+  --check-glow-ombre: rgba(244, 114, 182, 0.5);
+
+  --counter-bg: #111321;
+  --counter-solid: rgba(192, 132, 252, 0.15);
+  --counter-ombre: rgba(244, 114, 182, 0.15);
+
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+
+  --font: 'Outfit', sans-serif;
+}
+
+/* ===========================
+   Reset & Base
+   =========================== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font);
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===========================
+   Background Orbs
+   =========================== */
+body::before,
+body::after {
+  content: '';
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+body::before {
+  width: 600px;
+  height: 600px;
+  top: -200px;
+  left: -200px;
+  background: radial-gradient(circle, rgba(192, 132, 252, 0.12), transparent 70%);
+}
+
+body::after {
+  width: 500px;
+  height: 500px;
+  bottom: -150px;
+  right: -150px;
+  background: radial-gradient(circle, rgba(244, 114, 182, 0.10), transparent 70%);
+}
+
+/* ===========================
+   Header
+   =========================== */
+.site-header {
+  position: relative;
+  z-index: 10;
+  padding: 14px 32px 14px;
+  background: linear-gradient(135deg, rgba(26, 29, 48, 0.95) 0%, rgba(19, 22, 38, 0.98) 100%);
+  border-bottom: 1px solid var(--border-subtle);
+  backdrop-filter: blur(20px);
+}
+
+.header-inner {
+  max-width: 1800px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.header-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* ───────────────────────────
+   Toolbar Buttons
+─────────────────────────── */
+.toolbar {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.toolbar-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-secondary);
+  font-family: var(--font);
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.toolbar-btn:hover {
+  background: rgba(192, 132, 252, 0.12);
+  border-color: rgba(192, 132, 252, 0.4);
+  color: var(--text-primary);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.toolbar-btn:active {
+  transform: translateY(0);
+}
+
+.toolbar-btn.btn-danger:hover {
+  background: rgba(244, 63, 94, 0.15);
+  border-color: rgba(244, 63, 94, 0.5);
+  color: #fb7185;
+}
+
+/* ───────────────────────────
+   Config Notice Banner
+─────────────────────────── */
+.config-notice {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+  padding: 9px 16px;
+  background: rgba(129, 140, 248, 0.1);
+  border: 1px solid rgba(129, 140, 248, 0.3);
+  border-radius: var(--radius-sm);
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+}
+
+.config-notice svg {
+  flex-shrink: 0;
+  stroke: #818cf8;
+}
+
+.notice-dismiss {
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 0.85rem;
+  padding: 0 4px;
+  line-height: 1;
+  transition: color 0.2s;
+}
+
+.notice-dismiss:hover {
+  color: var(--text-primary);
+}
+
+.header-icon {
+  font-size: 2.0rem;
+  line-height: 1;
+  filter: drop-shadow(0 0 14px rgba(244, 114, 182, 0.6));
+  animation: floatIcon 4s ease-in-out infinite;
+}
+
+@keyframes floatIcon {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.site-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #c084fc, #f472b6, #818cf8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.02em;
+}
+
+.site-subtitle {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-top: 2px;
+  font-weight: 300;
+}
+
+.header-stats {
+  margin-left: auto;
+}
+
+.stat-pill {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: linear-gradient(135deg, rgba(192, 132, 252, 0.12), rgba(244, 114, 182, 0.08));
+  border: 1px solid rgba(192, 132, 252, 0.3);
+  border-radius: var(--radius-lg);
+  padding: 6px 16px;
+  min-width: 90px;
+}
+
+.stat-num {
+  font-size: 1.5rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #c084fc, #f472b6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1.1;
+  transition: all 0.3s ease;
+}
+
+.stat-label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+/* ===========================
+   Loading / Error Screens
+   =========================== */
+.loading-screen,
+.error-screen {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  background: var(--bg-deep);
+  z-index: 100;
+  color: var(--text-secondary);
+  font-size: 1rem;
+}
+
+.loading-spinner {
+  width: 44px;
+  height: 44px;
+  border: 3px solid rgba(192, 132, 252, 0.2);
+  border-top-color: var(--accent-1);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.error-icon {
+  font-size: 3rem;
+}
+
+.error-screen h2 {
+  color: var(--text-primary);
+  font-size: 1.4rem;
+}
+
+.error-screen p {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  max-width: 420px;
+  text-align: center;
+}
+
+/* ===========================
+   Main Content
+   =========================== */
+.main-content {
+  position: relative;
+  z-index: 5;
+  padding: 12px 16px 16px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ===========================
+   Tabs Navigation
+   =========================== */
+.main-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-bottom: 8px;
+  margin-bottom: 8px;
+}
+
+.tab-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  padding: 8px 16px;
+  border-radius: var(--radius-md);
+  font-family: var(--font);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tab-btn:hover {
+  background: var(--bg-card-hover);
+  color: var(--text-primary);
+}
+
+.tab-btn.active {
+  background: rgba(192, 132, 252, 0.15);
+  border-color: rgba(192, 132, 252, 0.5);
+  color: #c084fc;
+  box-shadow: 0 0 12px rgba(192, 132, 252, 0.2);
+}
+
+.tab-icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  border-radius: 4px;
+}
+
+/* ===========================
+   Table Scroll Wrapper
+   =========================== */
+.table-scroll-wrapper {
+  flex: 1;
+  overflow: auto;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-card);
+  box-shadow:
+    0 4px 6px rgba(0, 0, 0, 0.3),
+    0 20px 40px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+
+  /* custom scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(192, 132, 252, 0.4) transparent;
+}
+
+.table-scroll-wrapper::-webkit-scrollbar {
+  height: 8px;
+}
+
+.table-scroll-wrapper::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.table-scroll-wrapper::-webkit-scrollbar-thumb {
+  background: rgba(192, 132, 252, 0.4);
+  border-radius: 4px;
+}
+
+.table-scroll-wrapper::-webkit-scrollbar-thumb:hover {
+  background: rgba(192, 132, 252, 0.6);
+}
+
+/* ===========================
+   Tracker Table
+   =========================== */
+.tracker-table {
+  border-collapse: separate;
+  border-spacing: 0;
+  table-layout: fixed; /* forces columns to honour explicit col/th widths */
+  width: max-content;
+}
+
+
+/* ===========================
+   Sticky Left Column
+   =========================== */
+.sticky-left {
+  position: sticky;
+  left: 0;
+  z-index: 12;
+  background: var(--bg-card);
+}
+
+/* Only override sticky background for non-swatch cells */
+tbody tr td.sticky-left:not(.color-label-cell) {
+  background: var(--bg-card);
+}
+
+tbody tr:nth-child(even) td.sticky-left:not(.color-label-cell) {
+  background: var(--bg-row-alt);
+}
+
+/* Swatch label cell always shows its swatch color */
+tbody tr td.sticky-left.color-label-cell {
+  background: var(--label-bg) !important;
+}
+
+/* ===========================
+   Table Headers
+   =========================== */
+thead {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+thead th {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+/* Flower name row */
+.flower-header-row th.flower-name-group {
+  text-align: center;
+  padding: 14px 8px 8px;
+  border-left: 1px solid var(--border-subtle);
+  background: color-mix(in srgb, var(--flower-bg, transparent) 5%, var(--bg-card));
+  border-top: 3px solid var(--flower-bg, transparent);
+  /* Lock to exactly the col width so content cannot inflate the column */
+  width: 95px;
+  min-width: 95px;
+  max-width: 95px;
+  overflow: hidden;
+}
+
+
+.flower-header-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.flower-name {
+  color: var(--text-primary);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: normal;
+  text-align: center;
+  max-width: 95px;
+  line-height: 1.15;
+}
+
+.flower-icon {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  padding: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.flower-header-row th.color-label-col {
+  background-color: var(--bg-card);
+  padding: 14px 16px 8px;
+  color: var(--text-muted);
+  font-size: 0.7rem;
+}
+
+/* Variant sub-header row */
+.variant-header-row {
+  /* Using background on th instead to keep opacity correct */
+}
+
+.variant-header-row th.variant-cell {
+  background: color-mix(in srgb, var(--flower-bg, transparent) 5%, var(--bg-card));
+  padding: 6px 10px 10px;
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  text-align: center;
+  border-bottom: 2px solid var(--border-subtle);
+  white-space: nowrap;
+  min-width: 95px;
+  width: 95px;
+  max-width: 95px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.variant-header-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.variant-header-content span {
+  width: 100%;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.variant-icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.04);
+  padding: 2px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.variant-header-row th.variant-solid {
+  color: var(--check-solid);
+  border-left: 1px solid var(--border-subtle);
+}
+
+.variant-header-row th.variant-ombre {
+  color: var(--check-ombre);
+}
+
+/* ===========================
+   Table Body
+   =========================== */
+tbody tr {
+  transition: background 0.2s ease;
+}
+
+tbody tr:nth-child(odd) {
+  background: var(--bg-card);
+}
+
+tbody tr:nth-child(even) {
+  background: var(--bg-row-alt);
+}
+
+tbody tr:hover {
+  background: var(--bg-card-hover);
+}
+
+/* Don't override the swatch background on the sticky label cell */
+tbody tr:hover td.sticky-left.color-label-cell {
+  background: var(--label-bg) !important;
+}
+
+/* Color label cell – background set inline by JS to swatch color */
+td.color-label-cell {
+  padding: 7px 20px 7px 14px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.85), 0 0 12px rgba(0, 0, 0, 0.6);
+  white-space: nowrap;
+  border-right: 1px solid rgba(255, 255, 255, 0.18);
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  letter-spacing: 0.01em;
+}
+
+/* Swatch dot removed – color is now the cell background */
+.color-swatch {
+  display: none;
+}
+
+td.checkbox-cell {
+  text-align: center;
+  padding: 5px 6px;
+  vertical-align: middle;
+  border-left: 1px solid rgba(255, 255, 255, 0.04);
+  min-width: 95px;
+  width: 95px;
+  max-width: 95px;
+  background: color-mix(in srgb, var(--flower-bg, transparent) 5%, var(--bg-card));
+}
+
+td.checkbox-cell.flower-group-start {
+  border-left: 1px solid var(--border-subtle);
+}
+
+/* ===========================
+   Custom Checkbox
+   =========================== */
+.check-wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+}
+
+.check-wrapper input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.check-box {
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+  border: 1.5px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.03);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.check-box::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: transparent;
+  transition: background 0.2s ease;
+  border-radius: 6px;
+}
+
+.check-box svg {
+  opacity: 0;
+  transform: scale(0.4);
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  z-index: 1;
+}
+
+/* Checked state – solid swatch fill, white checkmark */
+.check-wrapper input:checked + .check-box {
+  background: var(--row-swatch, var(--check-solid));
+  border-color: var(--row-swatch, var(--check-solid));
+  box-shadow:
+    0 0 14px color-mix(in srgb, var(--row-swatch, var(--check-solid)) 60%, transparent),
+    0 2px 6px rgba(0, 0, 0, 0.4);
+}
+.check-wrapper input:checked + .check-box svg {
+  opacity: 1;
+  transform: scale(1);
+  stroke: rgba(255, 255, 255, 0.92);
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.55));
+}
+
+.check-wrapper:hover .check-box {
+  border-color: color-mix(in srgb, var(--row-swatch, #fff) 55%, rgba(255, 255, 255, 0.3));
+  background: color-mix(in srgb, var(--row-swatch, #fff) 20%, var(--bg-card));
+  transform: scale(1.08);
+}
+
+/* ===========================
+   Footer / Counter Rows
+   =========================== */
+tfoot {
+  position: sticky;
+  bottom: 0;
+  z-index: 4;
+}
+
+tfoot tr.counter-label-row th {
+  background: var(--counter-bg);
+  padding: 12px 16px 4px;
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-top: 2px solid var(--border-subtle);
+}
+
+tfoot tr.counter-row td {
+  background: var(--counter-bg);
+  padding: 6px 6px 14px;
+  text-align: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+tfoot tr.counter-row td.counter-label-cell {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  text-align: left;
+  padding-left: 16px;
+  border-right: 1px solid var(--border-subtle);
+  white-space: nowrap;
+}
+
+.counter-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 38px;
+  height: 30px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  padding: 0 8px;
+  transition: all 0.3s ease;
+}
+
+.counter-badge.solid-badge {
+  background: rgba(192, 132, 252, 0.12);
+  color: #c084fc;
+  border: 1px solid rgba(192, 132, 252, 0.3);
+}
+
+.counter-badge.ombre-badge {
+  background: rgba(244, 114, 182, 0.12);
+  color: #f472b6;
+  border: 1px solid rgba(244, 114, 182, 0.3);
+}
+
+.counter-badge.solid-badge.has-count {
+  box-shadow: 0 0 10px rgba(192, 132, 252, 0.35);
+  transform: scale(1.05);
+}
+
+.counter-badge.ombre-badge.has-count {
+  box-shadow: 0 0 10px rgba(244, 114, 182, 0.35);
+  transform: scale(1.05);
+}
+
+/* Counter total per flower */
+tfoot tr.counter-total-row td {
+  background: rgba(0, 0, 0, 0.2);
+  padding: 4px 6px 12px;
+  text-align: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+tfoot tr.counter-total-row td.counter-total-label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-align: left;
+  padding-left: 16px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-right: 1px solid var(--border-subtle);
+}
+
+.total-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  height: 28px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 0 8px;
+  background: linear-gradient(135deg, rgba(192, 132, 252, 0.15), rgba(244, 114, 182, 0.15));
+  color: var(--text-secondary);
+  border: 1px solid rgba(192, 132, 252, 0.2);
+  transition: all 0.3s ease;
+}
+
+.total-badge.has-count {
+  background: linear-gradient(135deg, rgba(192, 132, 252, 0.25), rgba(244, 114, 182, 0.25));
+  color: var(--text-primary);
+  box-shadow: 0 0 12px rgba(192, 132, 252, 0.2);
+}
+
+/* ===========================
+   Bump animation on check
+   =========================== */
+@keyframes bump {
+  0% {
+    transform: scale(1);
+  }
+
+  40% {
+    transform: scale(1.3);
+  }
+
+  70% {
+    transform: scale(0.9);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.bump {
+  animation: bump 0.35s ease forwards;
+}
+
+/* ===========================
+   Responsive tweaks
+   =========================== */
+@media (max-width: 640px) {
+  .site-title {
+    font-size: 1.4rem;
+  }
+
+  .header-icon {
+    font-size: 2rem;
+  }
+
+  .main-content {
+    padding: 16px 8px 40px;
+  }
+}
+
+/* ===========================
+   Hybrid Modal Overlay
+   =========================== */
+.hybrid-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: #000;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  animation: modal-fade-in 0.18s ease;
+}
+
+@keyframes modal-fade-in {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.hybrid-modal-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.7);
+  display: flex;
+  flex-direction: column;
+  max-width: 92vw;
+  max-height: 88vh;
+  overflow: hidden;
+  width: fit-content;
+}
+
+/* ── Modal Header ─────────────────────────────────────────── */
+.hybrid-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 20px 14px;
+  border-bottom: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+}
+
+.hybrid-modal-title-group {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.hybrid-modal-flower-icon {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  padding: 4px;
+}
+
+.hybrid-modal-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 2px;
+}
+
+.hybrid-modal-subtitle {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  margin: 0;
+  letter-spacing: 0.02em;
+}
+
+.hybrid-modal-close {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 1rem;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, color 0.15s;
+  flex-shrink: 0;
+}
+
+.hybrid-modal-close:hover {
+  background: rgba(255, 80, 80, 0.18);
+  color: #ff7070;
+  border-color: rgba(255,80,80,0.3);
+}
+
+/* ── Legend ───────────────────────────────────────────────── */
+.hybrid-modal-legend {
+  display: flex;
+  gap: 20px;
+  padding: 8px 20px;
+  border-bottom: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+  background: rgba(255,255,255,0.02);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.68rem;
+  color: var(--text-muted);
+}
+
+.legend-swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.legend-solid-link {
+  background: rgba(255, 220, 100, 0.15);
+  border: 1.5px solid rgba(255, 220, 100, 0.55);
+}
+
+.legend-pattern-link {
+  background: rgba(130, 190, 255, 0.15);
+  border: 1.5px solid rgba(130, 190, 255, 0.55);
+}
+
+.legend-hybrid {
+  background: rgba(255,255,255,0.04);
+  border: 1.5px solid rgba(255,255,255,0.2);
+}
+
+/* ── Modal Body / Scroll ──────────────────────────────────── */
+.hybrid-modal-body {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.hybrid-table-scroll {
+  overflow: auto;
+  flex: 1;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(192, 132, 252, 0.4) transparent;
+}
+
+.hybrid-table-scroll::-webkit-scrollbar { width: 6px; height: 6px; }
+.hybrid-table-scroll::-webkit-scrollbar-track { background: transparent; }
+.hybrid-table-scroll::-webkit-scrollbar-thumb {
+  background: rgba(192,132,252,0.4);
+  border-radius: 3px;
+}
+
+/* ── Hybrid Table ─────────────────────────────────────────── */
+.hybrid-table {
+  border-collapse: separate;
+  border-spacing: 0;
+  table-layout: fixed;
+}
+
+/* Corner cell */
+.hybrid-corner-cell {
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 30;
+  background: var(--bg-card);
+  border-right: 2px solid var(--border-subtle);
+  border-bottom: 2px solid var(--border-subtle);
+  width: 96px;
+  min-width: 96px;
+  max-width: 96px;
+  padding: 6px 8px;
+  vertical-align: bottom;
+}
+
+.hybrid-axis-label {
+  font-size: 0.6rem;
+  color: var(--text-muted);
+  line-height: 1.3;
+  display: block;
+  text-align: right;
+}
+
+/* Column swatch headers */
+.hybrid-col-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: var(--bg-card);
+  border-bottom: 2px solid var(--border-subtle);
+  width: 26px;
+  min-width: 26px;
+  max-width: 26px;
+  padding: 5px 3px;
+  text-align: center;
+  vertical-align: bottom;
+}
+
+.hybrid-swatch-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255,255,255,0.2);
+  display: inline-block;
+}
+
+/* Row label headers */
+.hybrid-row-header {
+  position: sticky;
+  left: 0;
+  z-index: 10;
+  width: 96px;
+  min-width: 96px;
+  max-width: 96px;
+  padding: 0 8px 0 6px;
+  border-right: 2px solid var(--border-subtle);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.hybrid-row-label {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: #fff;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.9);
+  letter-spacing: 0.01em;
+}
+
+/* Grid cells */
+.hybrid-cell {
+  width: 26px;
+  min-width: 26px;
+  max-width: 26px;
+  height: 28px;
+  padding: 1px;
+  text-align: center;
+  vertical-align: middle;
+  border: none;
+}
+
+/* Diagonal cells — linked to Solid (Main tab) */
+.hybrid-cell.linked-solid {
+  background: rgba(255, 220, 100, 0.06);
+}
+.hybrid-table tbody tr:nth-child(even) .hybrid-cell.linked-solid {
+  background: rgba(255, 220, 100, 0.10);
+}
+
+/* First-column cells — linked to Pattern tab */
+.hybrid-cell.linked-pattern {
+  background: rgba(130, 190, 255, 0.06);
+}
+.hybrid-table tbody tr:nth-child(even) .hybrid-cell.linked-pattern {
+  background: rgba(130, 190, 255, 0.10);
+}
+
+/* Top-left corner: both diagonal AND first-column */
+.hybrid-cell.linked-solid.linked-pattern {
+  background: rgba(200, 210, 180, 0.08);
+}
+.hybrid-table tbody tr:nth-child(even) .hybrid-cell.linked-solid.linked-pattern {
+  background: rgba(200, 210, 180, 0.12);
+}
+
+/* First-column header indicator */
+.hybrid-col-header.linked-pattern-header {
+  background: color-mix(in srgb, rgb(130, 190, 255) 7%, var(--bg-card));
+  border-left: 2px solid rgba(130, 190, 255, 0.35);
+  border-right: 2px solid rgba(130, 190, 255, 0.35);
+}
+
+
+/* Regular trackable cells */
+.hybrid-check-wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+}
+
+.hybrid-check-wrapper input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.hybrid-box {
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  border: 1.5px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.04);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.12s, border-color 0.12s, transform 0.1s;
+}
+
+.hybrid-check-wrapper:hover .hybrid-box {
+  border-color: rgba(255,255,255,0.35);
+  background: rgba(255,255,255,0.08);
+  transform: scale(1.1);
+}
+
+.hybrid-cell.is-checked .hybrid-box {
+  border-color: rgba(255,255,255,0.3);
+}
+
+.hybrid-cell.is-checked .hybrid-box svg {
+  stroke: rgba(255,255,255,0.9);
+}
+
+/* Row zebra striping */
+.hybrid-table tbody tr:nth-child(even) .hybrid-cell {
+  background: rgba(255,255,255,0.02);
+}
+.hybrid-table tbody tr:nth-child(even) .hybrid-diag {
+  background: rgba(255,255,255,0.04);
+}
+
+/* Hover highlight for the whole row/col isn't practical in pure CSS for a grid;
+   just highlight the cell */
+.hybrid-check-wrapper:hover .hybrid-box {
+  transform: scale(1.12);
+}
+
+/* ── Modal Footer ─────────────────────────────────────────── */
+.hybrid-modal-footer {
+  padding: 10px 20px;
+  border-top: 1px solid var(--border-subtle);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  text-align: center;
+  flex-shrink: 0;
+  background: rgba(255,255,255,0.02);
+}
+
+/* ── Clickable flower header on pattern tabs ─────────────── */
+.flower-header-clickable {
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.flower-header-clickable:hover {
+  background: color-mix(in srgb, var(--flower-bg, transparent) 18%, var(--bg-card)) !important;
+}
+
+.flower-header-clickable .flower-header-content::after {
+  content: '⊞';
+  display: block;
+  font-size: 0.6rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+  letter-spacing: 0;
+}
+

@@ -276,7 +276,8 @@ function buildBody() {
 
         const label = document.createElement('label');
         label.className = `check-wrapper is-${v}`;
-        label.title = `${flower.name} — ${color.name} — ${v}`;
+        const capitalizedVariant = v.charAt(0).toUpperCase() + v.slice(1);
+        label.title = `${flower.name} — ${color.name} — ${capitalizedVariant}`;
 
         const input = document.createElement('input');
         input.type = 'checkbox';
@@ -432,22 +433,30 @@ function updateHybridCounter(flower, patternId) {
   const total = COLORS.length * COLORS.length;
 
   COLORS.forEach((rowColor, ri) => {
-    COLORS.forEach((__, ci) => {
-      const isDiag  = ri === ci;
-      const isFirst = ci === 0;
-      let checked = false;
+      COLORS.forEach((__, ci) => {
+        const isDiag  = ri === ci;
+        const colColor = COLORS[ci];
+        
+        let isLinkedToPattern = false;
+        if (patternId === 'ombre' && rowColor.name === 'White') {
+          isLinkedToPattern = colColor.name === 'Pink';
+        } else {
+          isLinkedToPattern = colColor.name === 'White';
+        }
 
-      if (isDiag && isFirst) {
-        // top-left: count if EITHER solid OR pattern is checked
-        checked = STATE[makeKey(flower.name, ri, rowColor.name, 'solid')]    === true
-               || STATE[makeKey(flower.name, ri, rowColor.name, patternId)]  === true;
-      } else if (isDiag) {
-        checked = STATE[makeKey(flower.name, ri, rowColor.name, 'solid')] === true;
-      } else if (isFirst) {
-        checked = STATE[makeKey(flower.name, ri, rowColor.name, patternId)] === true;
-      } else {
-        checked = STATE[makeHybridKey(flower.name, patternId, ri, ci)] === true;
-      }
+        let checked = false;
+  
+        if (isDiag && isLinkedToPattern) {
+          // top-left: count if EITHER solid OR pattern is checked
+          checked = STATE[makeKey(flower.name, ri, rowColor.name, 'solid')]    === true
+                 || STATE[makeKey(flower.name, ri, rowColor.name, patternId)]  === true;
+        } else if (isDiag) {
+          checked = STATE[makeKey(flower.name, ri, rowColor.name, 'solid')] === true;
+        } else if (isLinkedToPattern) {
+          checked = STATE[makeKey(flower.name, ri, rowColor.name, patternId)] === true;
+        } else {
+          checked = STATE[makeHybridKey(flower.name, patternId, ri, ci)] === true;
+        }
 
       if (checked) count++;
     });
@@ -482,8 +491,9 @@ function buildHybridGrid(flower, patternId) {
     const isFirst = visualColIdx === 0;
     const th = document.createElement('th');
     th.className = `hybrid-col-header${isFirst ? ' linked-pattern-header' : ''}`;
+    const capitalizedPatternForHeader = patternId.charAt(0).toUpperCase() + patternId.slice(1);
     th.title = isFirst
-      ? `${col.name} — Col 1 is synced with the pattern tab`
+      ? `${col.name} — Col 1 is synced with the ${capitalizedPatternForHeader} tab`
       : col.name;
     th.innerHTML = `<div class="hybrid-swatch-dot" style="background:${col.swatch}"></div>`;
     headerRow.appendChild(th);
@@ -507,12 +517,19 @@ function buildHybridGrid(flower, patternId) {
 
     colIndices.forEach((ci, visualColIdx) => {
       const isDiag  = ri === ci;
-      const isFirst = visualColIdx === 0;
+      const colColor = COLORS[ci];
+      
+      let isLinkedToPattern = false;
+      if (patternId === 'ombre' && rowColor.name === 'White') {
+        isLinkedToPattern = colColor.name === 'Pink';
+      } else {
+        isLinkedToPattern = colColor.name === 'White';
+      }
 
       // ── Resolve state key(s) and current checked value ────────
       let primaryKey, secondaryKey = null, checked;
 
-      if (isDiag && isFirst) {
+      if (isDiag && isLinkedToPattern) {
         // top-left corner: linked to BOTH solid AND pattern tab
         primaryKey   = makeKey(flower.name, ri, rowColor.name, 'solid');
         secondaryKey = makeKey(flower.name, ri, rowColor.name, patternId);
@@ -521,8 +538,8 @@ function buildHybridGrid(flower, patternId) {
         // diagonal (non-first-col): linked to Solid (Main tab)
         primaryKey = makeKey(flower.name, ri, rowColor.name, 'solid');
         checked = STATE[primaryKey] === true;
-      } else if (isFirst) {
-        // first column (non-diagonal): linked to pattern tab checkbox
+      } else if (isLinkedToPattern) {
+        // linked to pattern tab checkbox
         primaryKey = makeKey(flower.name, ri, rowColor.name, patternId);
         checked = STATE[primaryKey] === true;
       } else {
@@ -535,10 +552,11 @@ function buildHybridGrid(flower, patternId) {
       const td = document.createElement('td');
       let cellClass = 'hybrid-cell';
       if (isDiag)  cellClass += ' linked-solid';
-      if (isFirst) cellClass += ' linked-pattern';
+      if (isLinkedToPattern) cellClass += ' linked-pattern';
       if (checked) cellClass += ' is-checked';
       td.className = cellClass;
-      td.title = `${rowColor.name} × ${COLORS[ci].name}${isDiag ? ' (Solid)' : isFirst ? ' (Pattern tab)' : ''}`;
+      const capitalizedPattern = patternId.charAt(0).toUpperCase() + patternId.slice(1);
+      td.title = `${rowColor.name} && ${colColor.name}${isDiag ? ' (Solid)' : isLinkedToPattern ? ` (${capitalizedPattern})` : ''}`;
 
       const label = document.createElement('label');
       label.className = 'hybrid-check-wrapper';

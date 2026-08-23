@@ -42,6 +42,69 @@
   --font: 'Outfit', sans-serif;
 }
 
+:root[data-theme="light"] {
+  --bg-deep: #f8fafc;
+  --bg-mid: #f1f5f9;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f1f5f9;
+  --bg-row-alt: #f8fafc;
+  
+  --text-primary: #0f172a;
+  --text-secondary: #334155;
+  --text-muted: #64748b;
+  
+  --border-subtle: rgba(0, 0, 0, 0.08);
+  --border-glow: rgba(192, 132, 252, 0.4);
+
+  --counter-bg: #ffffff;
+  --check-solid: #a855f7;
+  --check-ombre: #ec4899;
+}
+
+/* Light mode overrides */
+:root[data-theme="light"] .site-header {
+  background: linear-gradient(135deg, rgba(253, 230, 243, 0.95) 0%, rgba(255, 240, 245, 0.98) 100%);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+:root[data-theme="light"] .header-icon {
+  filter: drop-shadow(0 2px 4px rgba(244, 114, 182, 0.3));
+}
+
+:root[data-theme="light"] .stat-pill {
+  background: linear-gradient(135deg, rgba(244, 114, 182, 0.08), rgba(192, 132, 252, 0.08));
+  border: 1px solid rgba(244, 114, 182, 0.2);
+}
+
+:root[data-theme="light"] .check-box {
+  border-color: transparent;
+  background: rgba(0, 0, 0, 0.04);
+}
+
+:root[data-theme="light"] .check-wrapper:hover .check-box {
+  background: rgba(0, 0, 0, 0.08);
+  border-color: rgba(0, 0, 0, 0.05);
+}
+
+:root[data-theme="light"] .check-wrapper input:checked + .check-box {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+:root[data-theme="light"] .hybrid-box {
+  border-color: rgba(0, 0, 0, 0.12);
+  background: rgba(0, 0, 0, 0.04);
+}
+
+:root[data-theme="light"] .hybrid-check-wrapper:hover .hybrid-box {
+  background: rgba(0, 0, 0, 0.08);
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+:root[data-theme="light"] .hybrid-cell.is-checked .hybrid-box {
+  border-color: rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
 /* ===========================
    Reset & Base
    =========================== */
@@ -174,6 +237,72 @@ body::after {
   color: #fb7185;
 }
 
+/* Settings Dropdown */
+.settings-dropdown {
+  position: relative;
+}
+
+.settings-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 8px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+  min-width: 200px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.2s ease;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  padding: 8px 0;
+}
+
+.settings-dropdown:hover .settings-menu,
+.settings-dropdown:focus-within .settings-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.menu-item {
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  padding: 10px 16px;
+  text-align: left;
+  font-family: var(--font);
+  font-size: 0.85rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background 0.2s;
+  width: 100%;
+}
+
+.menu-item:hover {
+  background: var(--bg-card-hover);
+}
+
+.menu-item.danger-text {
+  color: #fb7185;
+}
+
+.menu-item.danger-text:hover {
+  background: rgba(244, 63, 94, 0.1);
+}
+
+.menu-divider {
+  height: 1px;
+  background: var(--border-subtle);
+  margin: 6px 0;
+}
+
 /* ───────────────────────────
    Config Notice Banner
 ─────────────────────────── */
@@ -212,8 +341,9 @@ body::after {
 }
 
 .header-icon {
-  font-size: 2.0rem;
-  line-height: 1;
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
   filter: drop-shadow(0 0 14px rgba(244, 114, 182, 0.6));
   animation: floatIcon 4s ease-in-out infinite;
 }
@@ -789,7 +919,7 @@ tfoot tr.counter-row td.counter-label-cell {
 
 /* Counter total per flower */
 tfoot tr.counter-total-row td {
-  background: var(--bg-deep);
+  background: var(--counter-bg);
   padding: 4px 6px 12px;
   text-align: center;
   border-top: 1px solid rgba(255, 255, 255, 0.06);

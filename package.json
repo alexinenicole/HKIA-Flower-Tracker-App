@@ -38,6 +38,7 @@
       }
     ],
     "win": {
+      "icon": "assets/app-logo.png",
       "target": [
         {
           "target": "nsis",
@@ -63,5 +64,8 @@
     "portable": {
       "artifactName": "HKIA-Flower-Tracker-Portable.exe"
     }
+  },
+  "dependencies": {
+    "xlsx": "^0.18.5"
   }
 }

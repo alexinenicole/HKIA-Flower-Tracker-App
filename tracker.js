@@ -26,13 +26,13 @@ const PATTERN_COMPATIBILITY = {
   'ombre': 'all', 'molten': 'all', 'crystal': 'all', 'frost': 'all', 'cosmic': 'all',
   'glitter': 'all', 'sunbeam': 'all', 'iridescent': 'all', 'glow': 'all',
 
-  'speckled': ['Belbutton', 'Dandelily', 'Hibiscus', 'Penstemum', 'Tulias', 'Blazebulb', 'Frost Feather', 'Bubbaluna', 'Bow Blossom', 'Petunia', 'Pinwheel', 'Poinsettia', 'Rose', 'Wheat Flower'],
-  'confetti': ['Belbutton', 'Dandelily', 'Heavy Nettle', 'Hibiscus', 'Penstemum', 'Tulias', 'Bubbaluna', 'Bow Blossom', 'Eggwort', 'Petunia', 'Pinwheel', 'Poinsettia', 'Rose', 'Wheat Flower'],
-  'trim': ['Belbutton', 'Dandelily', 'Heavy Nettle', 'Hibiscus', 'Penstemum', 'Thistle', 'Tulias', 'Blazebulb', 'Bubbaluna', 'Frost Feather', 'Eggwort', 'Happadil', 'Petunia', 'Pinwheel', 'Poinsettia', 'Rose', 'Wheat Flower'],
-  'alternate': ['Dandelily', 'Heavy Nettle', 'Hibiscus', 'Tulias', 'Wheat Flower', 'Eggwort', 'Penstemum', 'Pinwheel', 'Rose', 'Poinsettia'],
-  'striped': ['Heavy Nettle', 'Hibiscus', 'Tulias', 'Wheat Flower', 'Penstemum', 'Blazebulb', 'Bubbaluna', 'Crystalia', 'Eggwort', 'Petunia', 'Happadil', 'Rose', 'Poinsettia'],
-  'patch': ['Ghostgleam', 'Heavy Nettle', 'Hibiscus', 'Tulias', 'Wheat Flower', 'Penstemum', 'Eggwort', 'Pinwheel', 'Petunia', 'Happadil', 'Rose', 'Poinsettia'],
-  'ring': ['Ghostgleam', 'Heavy Nettle', 'Hibiscus', 'Tulias', 'Wheat Flower', 'Penstemum', 'Blazebulb', 'Bow Blossom', 'Frost Feather', 'Eggwort', 'Petunia', 'Happadil', 'Rose', 'Poinsettia']
+  'speckled': ['Penstemum', 'Dandelily', 'Belbutton', 'Tulias', 'Hibiscus', 'Wheat Flower', 'Heavy Nettle', 'Blazebulb', 'Bubbaluna', 'Sunburst', 'Pinwheel', 'Petunia', 'Bow Blossom', 'Poinsettia', 'Rose', 'Happadil'],
+  'confetti': ['Penstemum', 'Dandelily', 'Belbutton', 'Tulias', 'Hibiscus', 'Wheat Flower', 'Heavy Nettle', 'Thistle', 'Bubbaluna', 'Sunburst', 'Eggwort', 'Pinwheel', 'Petunia', 'Bow Blossom', 'Poinsettia', 'Rose'],
+  'trim': ['Penstemum', 'Dandelily', 'Belbutton', 'Tulias', 'Hibiscus', 'Wheat Flower', 'Heavy Nettle', 'Anemone', 'Thistle', 'Blazebulb', 'Bubbaluna', 'Sunburst', 'Eggwort', 'Pinwheel', 'Petunia', 'Poinsettia', 'Rose', 'Happadil'],
+  'alternate': ['Dandelily', 'Belbutton', 'Tulias', 'Hibiscus', 'Wheat Flower', 'Sunburst', 'Eggwort', 'Poinsettia', 'Happadil'],
+  'striped': ['Penstemum', 'Dandelily', 'Belbutton', 'Tulias', 'Hibiscus', 'Wheat Flower', 'Heavy Nettle', 'Thistle', 'Bubbaluna', 'Crystalia', 'Sunburst', 'Eggwort', 'Bow Blossom', 'Poinsettia', 'Rose', 'Happadil'],
+  'patch': ['Penstemum', 'Dandelily', 'Belbutton', 'Tulias', 'Hibiscus', 'Wheat Flower', 'Heavy Nettle', 'Thistle', 'Bubbaluna', 'Sunburst', 'Eggwort', 'Pinwheel', 'Petunia', 'Bow Blossom', 'Happadil'],
+  'ring': ['Penstemum', 'Dandelily', 'Belbutton', 'Tulias', 'Hibiscus', 'Wheat Flower', 'Heavy Nettle', 'Thistle', 'Bubbaluna', 'Crystalia', 'Sunburst', 'Eggwort', 'Petunia', 'Bow Blossom', 'Poinsettia', 'Happadil']
 };
 
 // ── Key helpers ───────────────────────────────────────────────
@@ -556,7 +556,7 @@ function buildHybridGrid(flower, patternId) {
       if (checked) cellClass += ' is-checked';
       td.className = cellClass;
       const capitalizedPattern = patternId.charAt(0).toUpperCase() + patternId.slice(1);
-      td.title = `${rowColor.name} && ${colColor.name}${isDiag ? ' (Solid)' : isLinkedToPattern ? ` (${capitalizedPattern})` : ''}`;
+      td.title = `${rowColor.name} & ${colColor.name}${isDiag ? ' (Solid)' : isLinkedToPattern ? ` (${capitalizedPattern})` : ''}`;
 
       const label = document.createElement('label');
       label.className = 'hybrid-check-wrapper';
@@ -564,6 +564,8 @@ function buildHybridGrid(flower, patternId) {
       const input = document.createElement('input');
       input.type = 'checkbox';
       input.checked = checked;
+      input.dataset.hybridRow = ri;
+      input.dataset.hybridCol = ci;
 
       const box = document.createElement('span');
       box.className = 'hybrid-box';
@@ -589,6 +591,27 @@ function buildHybridGrid(flower, patternId) {
 
         await applyKey(_pk);
         if (_sk) await applyKey(_sk);
+
+        // Auto-check the solid variant (diagonal cell) when pattern is checked
+        if (isNowChecked && isLinkedToPattern && !isDiag) {
+          const solidKey = makeKey(flower.name, ri, rowColor.name, 'solid');
+          if (!STATE[solidKey]) {
+            STATE[solidKey] = true;
+            await window.trackerAPI.setState(solidKey, true);
+            updateLinkedCheckboxInDOM(solidKey, true); // sync to main table DOM
+            
+            // Visually update the diagonal cell in the modal
+            const diagInput = tbody.querySelector(`input[data-hybrid-row="${ri}"][data-hybrid-col="${ri}"]`);
+            if (diagInput && !diagInput.checked) {
+              diagInput.checked = true;
+              const diagTd = diagInput.closest('td');
+              const diagBox = diagInput.nextElementSibling;
+              diagTd.classList.add('is-checked');
+              diagBox.style.background = _swatch;
+              diagBox.innerHTML = CHECK_SVG;
+            }
+          }
+        }
 
         if (isNowChecked) {
           td.classList.add('is-checked');
@@ -663,6 +686,21 @@ async function onCheckChange(e) {
 
 // ── Toolbar button bindings ───────────────────────────────────
 function bindToolbar() {
+  document.getElementById('btn-import').addEventListener('click', async () => {
+    try {
+      const result = await window.trackerAPI.importExcel();
+      if (!result || result.canceled) return;
+      
+      if (result.success) {
+        processImportedData(result.sheets);
+      } else {
+        alert('Import failed: ' + result.error);
+      }
+    } catch (err) {
+      alert('Import crashed: ' + err.message);
+    }
+  });
+
   document.getElementById('btn-open-config').addEventListener('click', async () => {
     const ok = await window.trackerAPI.openConfig();
     const cfgPath = await window.trackerAPI.getConfigPath();
@@ -688,6 +726,28 @@ function bindToolbar() {
     document.getElementById('config-notice').style.display = 'none';
   });
 
+  // Theme Toggle
+  const btnTheme = document.getElementById('btn-theme-toggle');
+  if (btnTheme) {
+    btnTheme.addEventListener('click', () => {
+      const root = document.documentElement;
+      const isLight = root.getAttribute('data-theme') === 'light';
+      const themeIcon = document.getElementById('theme-icon');
+      const themeText = document.getElementById('theme-text');
+      if (isLight) {
+        root.removeAttribute('data-theme');
+        localStorage.setItem('hkia-theme', 'dark');
+        if (themeIcon) themeIcon.textContent = '☀️';
+        if (themeText) themeText.textContent = 'Light Mode';
+      } else {
+        root.setAttribute('data-theme', 'light');
+        localStorage.setItem('hkia-theme', 'light');
+        if (themeIcon) themeIcon.textContent = '🌙';
+        if (themeText) themeText.textContent = 'Dark Mode';
+      }
+    });
+  }
+
   // ── Hybrid modal close bindings ────────────────────────────
   document.getElementById('hybrid-modal-close').addEventListener('click', closeHybridModal);
   document.getElementById('hybrid-modal').addEventListener('click', (e) => {
@@ -696,6 +756,85 @@ function bindToolbar() {
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') closeHybridModal();
   });
+}
+
+function processImportedData(sheets) {
+  let importedCount = 0;
+
+  for (const [sheetName, rows] of Object.entries(sheets)) {
+    const lowerSheet = sheetName.toLowerCase().trim();
+    let variant = 'solid';
+    if (PATTERNS.includes(lowerSheet)) {
+      variant = lowerSheet;
+    }
+
+    let colorMap = {}; // colIndex -> colorObj
+    let dataStartRow = 0;
+
+    for (let r = 0; r < rows.length; r++) {
+      const row = rows[r];
+      if (!row) continue;
+      let colorsInRow = 0;
+      let tempMap = {};
+      for (let c = 0; c < row.length; c++) {
+        const val = String(row[c] || '').toLowerCase().trim();
+        const colorMatch = COLORS.find(color => color.name.toLowerCase() === val);
+        if (colorMatch) {
+          colorsInRow++;
+          tempMap[c] = colorMatch;
+        }
+      }
+      if (colorsInRow >= 3) {
+        colorMap = tempMap;
+        dataStartRow = r + 1;
+        break;
+      }
+    }
+
+    if (Object.keys(colorMap).length === 0) continue;
+
+    for (let r = dataStartRow; r < rows.length; r++) {
+      const row = rows[r];
+      if (!row) continue;
+      
+      let flowerName = null;
+      for (let c = 0; c < row.length; c++) {
+        if (colorMap[c]) continue;
+        const val = String(row[c] || '').toLowerCase().trim();
+        const match = ALL_FLOWERS.find(f => f.name.toLowerCase() === val);
+        if (match) {
+          flowerName = match.name;
+          break;
+        }
+      }
+
+      if (!flowerName) continue;
+
+      for (const [c, colorObj] of Object.entries(colorMap)) {
+        const val = String(row[c] || '').toLowerCase().trim();
+        if (val && val !== '0' && val !== 'false' && val !== 'no') {
+          const colorIdx = COLORS.indexOf(colorObj);
+          const stateKey = makeKey(flowerName, colorIdx, colorObj.name, variant);
+          if (!STATE[stateKey]) {
+            STATE[stateKey] = true;
+            window.trackerAPI.setState(stateKey, true);
+            importedCount++;
+          }
+        }
+      }
+    }
+  }
+
+  if (importedCount > 0) {
+    showNotice(`Imported ${importedCount} checks! Updates applied.`);
+    clearTable();
+    buildHeaders();
+    buildBody();
+    buildFooter();
+    updateCounterUI();
+  } else {
+    showNotice('No recognizable checks found in the uploaded file.');
+  }
 }
 
 function showNotice(text) {
@@ -724,9 +863,17 @@ async function init() {
       throw new Error('data.json has no flowers or colors. Please check the file and reload.');
     }
 
-    // Show config path in subtitle
     const cfgPath = await window.trackerAPI.getConfigPath();
-    document.getElementById('subtitle-path').textContent = `Config: ${cfgPath}`;
+    
+    // Initialize Theme
+    const savedTheme = localStorage.getItem('hkia-theme') || 'dark';
+    if (savedTheme === 'light') {
+      document.documentElement.setAttribute('data-theme', 'light');
+      const themeIcon = document.getElementById('theme-icon');
+      const themeText = document.getElementById('theme-text');
+      if (themeIcon) themeIcon.textContent = '🌙';
+      if (themeText) themeText.textContent = 'Dark Mode';
+    }
 
     buildTabs();
     clearTable();

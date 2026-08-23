@@ -66,6 +66,7 @@ function createWindow() {
     minWidth: 800,
     minHeight: 600,
     title: 'HKIA Flower Tracker',
+    icon: path.join(__dirname, 'assets', 'app-logo.jpg'),
     backgroundColor: '#0d0f1a',
     webPreferences: {
       preload:          path.join(__dirname, 'preload.js'),
@@ -100,7 +101,7 @@ ipcMain.handle('get-state', () => trackerState);
  */
 ipcMain.handle('set-state', (_event, key, checked) => {
   if (checked) {
-    trackerState[key] = true;
+    trackerState[key] = trackerState[key] || Date.now();
   } else {
     delete trackerState[key];
   }
@@ -143,6 +144,33 @@ ipcMain.handle('get-config-path', () => dataPath);
 /** Reload the renderer after user has edited data.json */
 ipcMain.handle('reload', () => {
   mainWindow.webContents.reload();
+});
+
+/** Import Excel/CSV data */
+ipcMain.handle('import-excel', async () => {
+  try {
+    const { canceled, filePaths } = await dialog.showOpenDialog(mainWindow, {
+      title: 'Import Legacy Tracker',
+      filters: [
+        { name: 'Spreadsheets', extensions: ['xlsx', 'csv', 'xls'] },
+        { name: 'All Files', extensions: ['*'] }
+      ],
+      properties: ['openFile']
+    });
+
+    if (canceled || filePaths.length === 0) return { canceled: true };
+
+    const xlsx = require('xlsx');
+    const workbook = xlsx.readFile(filePaths[0]);
+    const sheets = {};
+    for (const sheetName of workbook.SheetNames) {
+      sheets[sheetName] = xlsx.utils.sheet_to_json(workbook.Sheets[sheetName], { header: 1 });
+    }
+    return { success: true, sheets };
+  } catch (err) {
+    console.error('[main] Import error:', err);
+    return { success: false, error: err.message };
+  }
 });
 
 // ── App lifecycle ─────────────────────────────────────────────

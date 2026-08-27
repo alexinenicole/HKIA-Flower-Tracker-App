@@ -38,7 +38,7 @@
       }
     ],
     "win": {
-      "icon": "assets/app-logo.png",
+      "icon": "assets/app-logo.ico",
       "target": [
         {
           "target": "nsis",

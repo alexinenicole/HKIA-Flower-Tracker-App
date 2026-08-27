@@ -26,6 +26,10 @@
       </div>
 
       <div class="header-actions">
+        <div class="stat-pill recent-pill" id="recent-pill" title="Click to view full history">
+          <span class="stat-num" id="recent-flower-name">None</span>
+          <span class="stat-label" id="recent-flower-time">Most Recent</span>
+        </div>
         <!-- Global counter -->
         <div class="stat-pill" id="global-total-pill">
           <span class="stat-num" id="global-total">0</span>
@@ -34,6 +38,13 @@
 
         <!-- Toolbar buttons -->
         <div class="toolbar settings-dropdown">
+          <button class="toolbar-btn" id="btn-history" title="History">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            History
+          </button>
           <button class="toolbar-btn" id="btn-settings" title="Settings">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="12" cy="12" r="3"></circle>
@@ -80,28 +91,43 @@
     <button class="toolbar-btn" id="btn-retry">Retry</button>
   </div>
 
-  <!-- ═══════════════════════════════════════════════════
-       Main Table
-  ═══════════════════════════════════════════════════ -->
-  <main class="main-content" id="main-content" style="display:none">
-    <nav class="main-tabs" id="main-tabs">
-      <!-- Tabs will be dynamically generated here -->
-    </nav>
-    <div class="table-scroll-wrapper">
-      <table class="tracker-table" id="tracker-table">
-        <thead>
-          <tr class="flower-header-row" id="flower-header-row">
-            <th class="color-label-col sticky-left">Color</th>
-          </tr>
-          <tr class="variant-header-row" id="variant-header-row">
-            <th class="color-label-col sticky-left"></th>
-          </tr>
-        </thead>
-        <tbody id="tracker-tbody"></tbody>
-        <tfoot  id="tracker-tfoot"></tfoot>
-      </table>
-    </div>
-  </main>
+  <div class="content-wrapper">
+    <!-- ═══════════════════════════════════════════════════
+         Main Table
+    ═══════════════════════════════════════════════════ -->
+    <main class="main-content" id="main-content" style="display:none">
+      <nav class="main-tabs" id="main-tabs">
+        <!-- Tabs will be dynamically generated here -->
+      </nav>
+      <div class="table-scroll-wrapper">
+        <table class="tracker-table" id="tracker-table">
+          <thead>
+            <tr class="flower-header-row" id="flower-header-row">
+              <th class="color-label-col sticky-left">Color</th>
+            </tr>
+            <tr class="variant-header-row" id="variant-header-row">
+              <th class="color-label-col sticky-left"></th>
+            </tr>
+          </thead>
+          <tbody id="tracker-tbody"></tbody>
+          <tfoot  id="tracker-tfoot"></tfoot>
+        </table>
+      </div>
+    </main>
+
+    <!-- ═══════════════════════════════════════════════════
+         History Sidebar
+    ═══════════════════════════════════════════════════ -->
+    <aside class="history-sidebar" id="history-sidebar">
+      <div class="history-header">
+        <h2>Recent History</h2>
+        <button class="history-close-btn" id="history-close-btn" title="Close History">✕</button>
+      </div>
+      <div class="history-content" id="history-content">
+        <!-- Generated History Items -->
+      </div>
+    </aside>
+  </div>
 
 
   <!-- ═══════════════════════════════════════════════════

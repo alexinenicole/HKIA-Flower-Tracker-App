@@ -20,8 +20,34 @@ const dataPath = app.isPackaged
   ? path.join(process.resourcesPath, 'data.json')
   : path.join(__dirname, 'data.json');
 
-// Tracker state saved in the user's AppData so it survives reinstalls.
-const statePath = path.join(app.getPath('userData'), 'tracker-state.json');
+const settingsPath = path.join(app.getPath('userData'), 'app-settings.json');
+
+function getAppSettings() {
+  try {
+    if (fs.existsSync(settingsPath)) {
+      return JSON.parse(fs.readFileSync(settingsPath, 'utf8'));
+    }
+  } catch (err) {
+    console.error('[main] Failed to read app-settings.json:', err.message);
+  }
+  return {};
+}
+
+function saveAppSettings(settings) {
+  try {
+    fs.writeFileSync(settingsPath, JSON.stringify(settings, null, 2), 'utf8');
+  } catch (err) {
+    console.error('[main] Failed to write app-settings.json:', err.message);
+  }
+}
+
+function getStatePath() {
+  const settings = getAppSettings();
+  if (settings.customDataPath) {
+    return path.join(settings.customDataPath, 'tracker-state.json');
+  }
+  return path.join(app.getPath('userData'), 'tracker-state.json');
+}
 
 // ── Helpers ──────────────────────────────────────────────────
 function readData() {
@@ -36,9 +62,10 @@ function readData() {
 }
 
 function readState() {
+  const currentPath = getStatePath();
   try {
-    if (fs.existsSync(statePath)) {
-      return JSON.parse(fs.readFileSync(statePath, 'utf8'));
+    if (fs.existsSync(currentPath)) {
+      return JSON.parse(fs.readFileSync(currentPath, 'utf8'));
     }
   } catch (err) {
     console.error('[main] Failed to read tracker-state.json:', err.message);
@@ -48,8 +75,9 @@ function readState() {
 
 // Write state immediately (sync) to avoid any close-before-write race
 function writeState(state) {
+  const currentPath = getStatePath();
   try {
-    fs.writeFileSync(statePath, JSON.stringify(state, null, 2), 'utf8');
+    fs.writeFileSync(currentPath, JSON.stringify(state, null, 2), 'utf8');
   } catch (err) {
     console.error('[main] Failed to write tracker-state.json:', err.message);
   }
@@ -171,6 +199,76 @@ ipcMain.handle('import-excel', async () => {
     console.error('[main] Import error:', err);
     return { success: false, error: err.message };
   }
+});
+
+/** Relocate save data storage */
+ipcMain.handle('change-data-location', async () => {
+  const { canceled, filePaths } = await dialog.showOpenDialog(mainWindow, {
+    title: 'Select Data Storage Folder',
+    properties: ['openDirectory']
+  });
+
+  if (canceled || filePaths.length === 0) return { canceled: true };
+
+  const newDir = filePaths[0];
+  const oldPath = getStatePath();
+  const newPath = path.join(newDir, 'tracker-state.json');
+
+  if (oldPath === newPath) return { success: true, newPath: newDir };
+
+  // Copy existing data if it exists
+  if (fs.existsSync(oldPath)) {
+    try {
+      fs.copyFileSync(oldPath, newPath);
+    } catch (err) {
+      console.error('[main] Failed to copy state to new location:', err);
+      return { success: false, error: err.message };
+    }
+  }
+
+  // Save new setting
+  const settings = getAppSettings();
+  settings.customDataPath = newDir;
+  saveAppSettings(settings);
+
+  // Reload state from new location
+  trackerState = readState();
+
+  return { success: true, newPath: newDir };
+});
+
+/** Reset save data storage to default */
+ipcMain.handle('reset-data-location', async () => {
+  const settings = getAppSettings();
+  if (!settings.customDataPath) {
+    return { success: true, newPath: app.getPath('userData') };
+  }
+
+  const oldPath = getStatePath();
+  
+  delete settings.customDataPath;
+  saveAppSettings(settings);
+
+  const newPath = getStatePath();
+
+  // Copy data back to default if it doesn't already exist
+  if (fs.existsSync(oldPath) && !fs.existsSync(newPath)) {
+     try {
+       fs.copyFileSync(oldPath, newPath);
+     } catch (err) {
+       console.error('[main] Failed to copy state back to default location:', err);
+     }
+  }
+
+  trackerState = readState();
+  
+  return { success: true, newPath: app.getPath('userData') };
+});
+
+/** Get current data storage directory */
+ipcMain.handle('get-data-location', () => {
+  const settings = getAppSettings();
+  return settings.customDataPath || app.getPath('userData');
 });
 
 // ── App lifecycle ─────────────────────────────────────────────

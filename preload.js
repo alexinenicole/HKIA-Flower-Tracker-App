@@ -33,4 +33,13 @@ contextBridge.exposeInMainWorld('trackerAPI', {
 
   /** Show import dialog and parse spreadsheet */
   importExcel:   ()            => ipcRenderer.invoke('import-excel'),
+
+  /** Change the data storage directory */
+  changeDataLocation: ()       => ipcRenderer.invoke('change-data-location'),
+
+  /** Reset data storage directory to default */
+  resetDataLocation:  ()       => ipcRenderer.invoke('reset-data-location'),
+
+  /** Get the current data storage directory */
+  getDataLocation:    ()       => ipcRenderer.invoke('get-data-location'),
 });

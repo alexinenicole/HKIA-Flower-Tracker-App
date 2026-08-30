@@ -705,6 +705,45 @@ function bindToolbar() {
     window.trackerAPI.reload();
   });
 
+  document.getElementById('btn-relocate-data').addEventListener('click', async () => {
+    const result = await window.trackerAPI.changeDataLocation();
+    if (result && result.success) {
+      showNotice(`Data location moved to: ${result.newPath}`);
+      // Refresh UI since state was reloaded in main
+      const savedState = await window.trackerAPI.getState();
+      STATE = savedState || {};
+      clearTable();
+      buildHeaders();
+      buildBody();
+      buildFooter();
+      updateCounterUI();
+      updateRecentPill();
+      if (document.getElementById('history-sidebar').classList.contains('open')) {
+        renderHistory();
+      }
+    } else if (result && result.error) {
+      showNotice(`Error: ${result.error}`);
+    }
+  });
+
+  document.getElementById('btn-reset-location').addEventListener('click', async () => {
+    const result = await window.trackerAPI.resetDataLocation();
+    if (result && result.success) {
+      showNotice(`Data location reset to default: ${result.newPath}`);
+      const savedState = await window.trackerAPI.getState();
+      STATE = savedState || {};
+      clearTable();
+      buildHeaders();
+      buildBody();
+      buildFooter();
+      updateCounterUI();
+      updateRecentPill();
+      if (document.getElementById('history-sidebar').classList.contains('open')) {
+        renderHistory();
+      }
+    }
+  });
+
   document.getElementById('btn-reset').addEventListener('click', async () => {
     const didReset = await window.trackerAPI.resetAll();
     if (didReset) {
@@ -957,13 +996,13 @@ function renderHistory() {
     return;
   }
 
-  // Group by month
+  // Group by date
   const groups = {};
   items.forEach(item => {
     const d = new Date(item.ts);
-    const monthYear = d.toLocaleString('default', { month: 'long', year: 'numeric' });
-    if (!groups[monthYear]) groups[monthYear] = [];
-    groups[monthYear].push(item);
+    const dateGroup = d.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
+    if (!groups[dateGroup]) groups[dateGroup] = [];
+    groups[dateGroup].push(item);
   });
 
   for (const [month, groupItems] of Object.entries(groups)) {
@@ -1002,7 +1041,7 @@ function renderHistory() {
       const imgPath = `assets/flowers/${safeName}.png`;
 
       const d = new Date(ts);
-      const timeStr = d.toLocaleDateString() + ' ' + d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      const timeStr = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
       const itemDiv = document.createElement('div');
       itemDiv.className = 'history-item';

@@ -197,9 +197,14 @@ function buildHeaders() {
 
     // On pattern tabs: clicking the flower header opens the hybrid grid
     if (currentTab !== 'main') {
-      th.classList.add('flower-header-clickable');
-      th.title = `Click to view ${flower.name} hybrid colour combinations`;
-      th.addEventListener('click', () => openHybridModal(flower));
+      const noHybridPatterns = ['frost', 'molten', 'crystal', 'cosmic', 'iridescent', 'glow', 'glitter', 'sunbeam'];
+      const noHybridTypes = ['extremophile', 'dlc'];
+      
+      if (!noHybridPatterns.includes(currentTab) && !noHybridTypes.includes(flower.type)) {
+        th.classList.add('flower-header-clickable');
+        th.title = `Click to view ${flower.name} hybrid colour combinations`;
+        th.addEventListener('click', () => openHybridModal(flower));
+      }
     }
 
     flowerRow.appendChild(th);
@@ -678,21 +683,6 @@ async function onCheckChange(e) {
 
 // ── Toolbar button bindings ───────────────────────────────────
 function bindToolbar() {
-  document.getElementById('btn-import').addEventListener('click', async () => {
-    try {
-      const result = await window.trackerAPI.importExcel();
-      if (!result || result.canceled) return;
-      
-      if (result.success) {
-        processImportedData(result.sheets);
-      } else {
-        alert('Import failed: ' + result.error);
-      }
-    } catch (err) {
-      alert('Import crashed: ' + err.message);
-    }
-  });
-
   document.getElementById('btn-open-config').addEventListener('click', async () => {
     const ok = await window.trackerAPI.openConfig();
     const cfgPath = await window.trackerAPI.getConfigPath();
@@ -787,85 +777,6 @@ function bindToolbar() {
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') closeHybridModal();
   });
-}
-
-function processImportedData(sheets) {
-  let importedCount = 0;
-
-  for (const [sheetName, rows] of Object.entries(sheets)) {
-    const lowerSheet = sheetName.toLowerCase().trim();
-    let variant = 'solid';
-    if (PATTERNS.includes(lowerSheet)) {
-      variant = lowerSheet;
-    }
-
-    let colorMap = {}; // colIndex -> colorObj
-    let dataStartRow = 0;
-
-    for (let r = 0; r < rows.length; r++) {
-      const row = rows[r];
-      if (!row) continue;
-      let colorsInRow = 0;
-      let tempMap = {};
-      for (let c = 0; c < row.length; c++) {
-        const val = String(row[c] || '').toLowerCase().trim();
-        const colorMatch = COLORS.find(color => color.name.toLowerCase() === val);
-        if (colorMatch) {
-          colorsInRow++;
-          tempMap[c] = colorMatch;
-        }
-      }
-      if (colorsInRow >= 3) {
-        colorMap = tempMap;
-        dataStartRow = r + 1;
-        break;
-      }
-    }
-
-    if (Object.keys(colorMap).length === 0) continue;
-
-    for (let r = dataStartRow; r < rows.length; r++) {
-      const row = rows[r];
-      if (!row) continue;
-      
-      let flowerName = null;
-      for (let c = 0; c < row.length; c++) {
-        if (colorMap[c]) continue;
-        const val = String(row[c] || '').toLowerCase().trim();
-        const match = ALL_FLOWERS.find(f => f.name.toLowerCase() === val);
-        if (match) {
-          flowerName = match.name;
-          break;
-        }
-      }
-
-      if (!flowerName) continue;
-
-      for (const [c, colorObj] of Object.entries(colorMap)) {
-        const val = String(row[c] || '').toLowerCase().trim();
-        if (val && val !== '0' && val !== 'false' && val !== 'no') {
-          const colorIdx = COLORS.indexOf(colorObj);
-          const stateKey = makeKey(flowerName, colorIdx, colorObj.name, variant);
-          if (!STATE[stateKey]) {
-            STATE[stateKey] = Date.now();
-            window.trackerAPI.setState(stateKey, Date.now());
-            importedCount++;
-          }
-        }
-      }
-    }
-  }
-
-  if (importedCount > 0) {
-    showNotice(`Imported ${importedCount} checks! Updates applied.`);
-    clearTable();
-    buildHeaders();
-    buildBody();
-    buildFooter();
-    updateCounterUI();
-  } else {
-    showNotice('No recognizable checks found in the uploaded file.');
-  }
 }
 
 function showNotice(text) {

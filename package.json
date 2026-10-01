@@ -65,7 +65,5 @@
       "artifactName": "HKIA-Flower-Tracker-Portable.exe"
     }
   },
-  "dependencies": {
-    "xlsx": "^0.18.5"
-  }
+  "dependencies": {}
 }

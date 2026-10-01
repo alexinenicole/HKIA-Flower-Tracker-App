@@ -31,9 +31,6 @@ contextBridge.exposeInMainWorld('trackerAPI', {
   /** Reload the window (after user saves data.json changes) */
   reload:        ()            => ipcRenderer.invoke('reload'),
 
-  /** Show import dialog and parse spreadsheet */
-  importExcel:   ()            => ipcRenderer.invoke('import-excel'),
-
   /** Change the data storage directory */
   changeDataLocation: ()       => ipcRenderer.invoke('change-data-location'),
 

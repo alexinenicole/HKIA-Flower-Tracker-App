@@ -532,16 +532,16 @@
   ],
   "colors": [
     {
+      "name": "White",
+      "swatch": "#f0eef4"
+    },
+    {
       "name": "Black",
       "swatch": "#3a383f"
     },
     {
       "name": "Grey",
       "swatch": "#807984"
-    },
-    {
-      "name": "White",
-      "swatch": "#f0eef4"
     },
     {
       "name": "Red",
@@ -558,6 +558,10 @@
     {
       "name": "Blush",
       "swatch": "#ffa1a9"
+    },
+    {
+      "name": "Brown",
+      "swatch": "#966c2d"
     },
     {
       "name": "Orange",

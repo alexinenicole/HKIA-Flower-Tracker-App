@@ -174,33 +174,6 @@ ipcMain.handle('reload', () => {
   mainWindow.webContents.reload();
 });
 
-/** Import Excel/CSV data */
-ipcMain.handle('import-excel', async () => {
-  try {
-    const { canceled, filePaths } = await dialog.showOpenDialog(mainWindow, {
-      title: 'Import Legacy Tracker',
-      filters: [
-        { name: 'Spreadsheets', extensions: ['xlsx', 'csv', 'xls'] },
-        { name: 'All Files', extensions: ['*'] }
-      ],
-      properties: ['openFile']
-    });
-
-    if (canceled || filePaths.length === 0) return { canceled: true };
-
-    const xlsx = require('xlsx');
-    const workbook = xlsx.readFile(filePaths[0]);
-    const sheets = {};
-    for (const sheetName of workbook.SheetNames) {
-      sheets[sheetName] = xlsx.utils.sheet_to_json(workbook.Sheets[sheetName], { header: 1 });
-    }
-    return { success: true, sheets };
-  } catch (err) {
-    console.error('[main] Import error:', err);
-    return { success: false, error: err.message };
-  }
-});
-
 /** Relocate save data storage */
 ipcMain.handle('change-data-location', async () => {
   const { canceled, filePaths } = await dialog.showOpenDialog(mainWindow, {

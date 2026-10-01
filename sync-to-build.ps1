@@ -19,6 +19,8 @@ Copy-Item -Force "tracker.js"  "$temp\tracker.js"
 Copy-Item -Force "style.css"   "$temp\style.css"
 Copy-Item -Force "index.html"  "$temp\index.html"
 Copy-Item -Force "data.json"   "$temp\data.json"
+Copy-Item -Force "main.js"     "$temp\main.js"
+Copy-Item -Force "preload.js"  "$temp\preload.js"
 Copy-Item -Force -Recurse "assets\*" "$temp\assets\"
 Copy-Item -Force "data.json"   "$resources\data.json"  # keep outside ASAR too
 

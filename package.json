@@ -41,19 +41,16 @@
       "icon": "assets/app-logo.ico",
       "target": [
         {
-          "target": "nsis",
+          "target": "portable",
           "arch": [
             "x64"
           ]
         }
       ]
     },
-    "nsis": {
-      "oneClick": false,
-      "allowToChangeInstallationDirectory": true,
-      "createDesktopShortcut": true,
-      "createStartMenuShortcut": true,
-      "shortcutName": "HKIA Flower Tracker"
+    "portable": {
+      "artifactName": "HKIA-Flower-Tracker.exe",
+      "unpackDirName": "HKIA-Flower-Tracker"
     }
   },
   "dependencies": {}

@@ -45,12 +45,6 @@
           "arch": [
             "x64"
           ]
-        },
-        {
-          "target": "portable",
-          "arch": [
-            "x64"
-          ]
         }
       ]
     },
@@ -60,9 +54,6 @@
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
       "shortcutName": "HKIA Flower Tracker"
-    },
-    "portable": {
-      "artifactName": "HKIA-Flower-Tracker-Portable.exe"
     }
   },
   "dependencies": {}
